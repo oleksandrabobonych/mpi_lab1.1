@@ -1,0 +1,78 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 20px;
+    color: #333;
+}
+.container {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+.controls {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.controls h2 {
+    margin-top: 0;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+.controls label {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.controls input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+button {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+button:hover {
+    background-color: #0056b3;
+}
+button.clear-btn {
+    background-color: #dc3545;
+    margin-top: 20px;
+}
+button.clear-btn:hover {
+    background-color: #a71d2a;
+}
+.visualization {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.visualization h3 {
+    margin: 0 0 10px 0;
+}
+canvas, #d3-container svg {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
