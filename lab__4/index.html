@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна №4 - Варіант 4</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Апроксимація та Інтерполяція (Варіант 4)</h1>
+        
+        <div class="controls">
+            <div class="group">
+                <button onclick="setData(5)">5 точок</button>
+                <button onclick="setData(9)">9 точок</button>
+                <button onclick="setData(20)">20 точок</button>
+            </div>
+            <div class="group">
+                <select id="modeSelect" onchange="updateView()">
+                    <option value="all">Показати все</option>
+                    <option value="interpolation">Інтерполяція Лагранжа</option>
+                    <option value="lsm">Квадратичний МНК (m=2)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="chart-container">
+            <div id="chart"></div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <div class="results-panel">
+            <div id="formula-lsm">Рівняння МНК: -</div>
+            <div id="metrics">MAE (Похибка): -</div>
+        </div>
+        
+        <div class="legend">
+            <span style="color: #e74c3c">━ Інтерполяція Лагранжа</span>
+            <span style="color: #3498db; margin-left: 20px;">━ МНК (m=2)</span>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
