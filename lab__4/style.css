@@ -1,0 +1,195 @@
+/* =========================================
+   Загальні стилі сторінки
+========================================= */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* =========================================
+   Основний контейнер
+========================================= */
+.container {
+    width: 900px;
+
+    background: white;
+    padding: 25px;
+
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    text-align: center;
+}
+
+
+/* =========================================
+   Панель керування
+========================================= */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   Кнопки
+========================================= */
+button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    background: #2c3e50;
+    color: white;
+
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #34495e;
+}
+
+
+/* =========================================
+   Список вибору
+========================================= */
+select {
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+
+/* =========================================
+   Контейнер графіка
+========================================= */
+#chart-container {
+    position: relative;
+
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+
+/* =========================================
+   Сітка графіка
+========================================= */
+.grid line {
+    stroke: #e0e0e0;
+    stroke-opacity: 0.7;
+
+    shape-rendering: crispEdges;
+}
+
+
+/* =========================================
+   Лінія інтерполяції
+========================================= */
+.line-interp {
+    fill: none;
+
+    stroke: #e74c3c;
+    stroke-width: 2.5;
+}
+
+
+/* =========================================
+   Лінія МНК
+========================================= */
+.line-lsm {
+    fill: none;
+
+    stroke: #3498db;
+    stroke-width: 2.5;
+
+    stroke-dasharray: 5,5;
+}
+
+
+/* =========================================
+   Лінії залишків
+========================================= */
+.residual-line {
+    stroke: #95a5a6;
+    stroke-width: 1;
+
+    stroke-dasharray: 2,2;
+}
+
+
+/* =========================================
+   Точки графіка
+========================================= */
+.dot {
+    fill: #2c3e50;
+
+    stroke: #fff;
+    stroke-width: 2;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   Tooltip (підказка)
+========================================= */
+.tooltip {
+    position: absolute;
+
+    padding: 8px;
+
+    background: rgba(0,0,0,0.8);
+    color: white;
+
+    border-radius: 4px;
+
+    pointer-events: none;
+    opacity: 0;
+
+    font-size: 12px;
+
+    z-index: 10;
+}
+
+
+/* =========================================
+   Панель результатів
+========================================= */
+.results-panel {
+    margin-top: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    background: #f8f9fa;
+    padding: 15px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================
+   Легенда графіка
+========================================= */
+.legend {
+    margin-top: 10px;
+
+    font-size: 14px;
+}
