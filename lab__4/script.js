@@ -31,3 +31,14 @@ function lagrangeInterpolation(data, x) {
     }
     return result;
 }
+
+// 2. Квадратичний МНК (m=2): y = ax^2 + bx + c
+function solveQuadraticLSM(data) {
+    const n = data.length;
+    let sx = 0, sx2 = 0, sx3 = 0, sx4 = 0, sy = 0, sxy = 0, sx2y = 0;
+
+    data.forEach(p => {
+        const x2 = p.x * p.x;
+        sx += p.x; sx2 += x2; sx3 += x2 * p.x; sx4 += x2 * x2;
+        sy += p.y; sxy += p.x * p.y; sx2y += x2 * p.y;
+    });
