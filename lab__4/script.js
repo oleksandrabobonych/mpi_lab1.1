@@ -42,3 +42,52 @@ function solveQuadraticLSM(data) {
         sx += p.x; sx2 += x2; sx3 += x2 * p.x; sx4 += x2 * x2;
         sy += p.y; sxy += p.x * p.y; sx2y += x2 * p.y;
     });
+     // Система лінійних рівнянь (Матриця 3x3)
+    const A = [
+        [sx4, sx3, sx2],
+        [sx3, sx2, sx],
+        [sx2, sx, n]
+    ];
+    const B = [sx2y, sxy, sy];
+
+    // Розв'язок методом Крамера
+    const det = (m) => 
+        m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+        m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+        m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+
+    const dMain = det(A);
+    const d1 = det([ [B[0], A[0][1], A[0][2]], [B[1], A[1][1], A[1][2]], [B[2], A[2][1], A[2][2]] ]);
+    const d2 = det([ [A[0][0], B[0], A[0][2]], [A[1][0], B[1], A[1][2]], [A[2][0], B[2], A[2][2]] ]);
+    const d3 = det([ [A[0][0], A[0][1], B[0]], [A[1][0], A[1][1], B[1]], [A[2][0], A[2][1], B[2]] ]);
+
+    return { a: d1/dMain, b: d2/dMain, c: d3/dMain };
+}
+
+function draw() {
+    const data = dataSets[currentN];
+    const mode = document.getElementById('modeSelect').value;
+    const lsm = solveQuadraticLSM(data);
+    
+    const margin = {top: 30, right: 30, bottom: 50, left: 50},
+          width = 850 - margin.left - margin.right,
+          height = 450 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart").html("").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear().domain(d3.extent(data, d => d.x)).range([0, width]);
+    const y = d3.scaleLinear().domain([d3.min(data, d => d.y)-1, d3.max(data, d => d.y)+1]).range([height, 0]);
+
+    // Сітка
+    svg.append("g").attr("class", "grid").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x).tickSize(-height).tickFormat(""));
+    svg.append("g").attr("class", "grid").call(d3.axisLeft(y).tickSize(-width).tickFormat(""));
+
+    svg.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
+    svg.append("g").call(d3.axisLeft(y));
+
+    const lineGen = d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveMonotoneX);
+    const steps = d3.range(d3.min(data, d => d.x), d3.max(data, d => d.x), 0.05);
