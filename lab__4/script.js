@@ -42,7 +42,8 @@ function solveQuadraticLSM(data) {
         sx += p.x; sx2 += x2; sx3 += x2 * p.x; sx4 += x2 * x2;
         sy += p.y; sxy += p.x * p.y; sx2y += x2 * p.y;
     });
-     // Система лінійних рівнянь (Матриця 3x3)
+
+    // Система лінійних рівнянь (Матриця 3x3)
     const A = [
         [sx4, sx3, sx2],
         [sx3, sx2, sx],
@@ -91,3 +92,49 @@ function draw() {
 
     const lineGen = d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveMonotoneX);
     const steps = d3.range(d3.min(data, d => d.x), d3.max(data, d => d.x), 0.05);
+
+    // 1. Інтерполяція
+    if (mode === 'all' || mode === 'interpolation') {
+        const interpPath = steps.map(px => ({x: px, y: lagrangeInterpolation(data, px)}));
+        const path = svg.append("path").datum(interpPath).attr("class", "line-interp").attr("d", lineGen);
+        
+        const len = path.node().getTotalLength();
+        path.attr("stroke-dasharray", len).attr("stroke-dashoffset", len)
+            .transition().duration(2000).attr("stroke-dashoffset", 0);
+    }
+
+    // 2. МНК та Залишки
+    if (mode === 'all' || mode === 'lsm') {
+        const lsmPath = steps.map(px => ({x: px, y: lsm.a*px**2 + lsm.b*px + lsm.c}));
+        svg.append("path").datum(lsmPath).attr("class", "line-lsm").attr("d", lineGen)
+           .style("opacity", 0).transition().duration(1000).style("opacity", 1);
+
+        // Залишки (Residuals)
+        let totalError = 0;
+        data.forEach(p => {
+            const yPred = lsm.a*p.x**2 + lsm.b*p.x + lsm.c;
+            totalError += Math.abs(p.y - yPred);
+            svg.append("line").attr("class", "residual-line")
+               .attr("x1", x(p.x)).attr("y1", y(p.y))
+               .attr("x2", x(p.x)).attr("y2", y(p.y))
+               .transition().delay(1000).duration(1000).attr("y2", y(yPred));
+        });
+
+        document.getElementById('formula-lsm').innerHTML = `y = ${lsm.a.toFixed(3)}x² + ${lsm.b.toFixed(3)}x + ${lsm.c.toFixed(3)}`;
+        document.getElementById('metrics').innerText = `MAE (Середня похибка): ${(totalError/data.length).toFixed(4)}`;
+    }
+
+    // Точки та Tooltip
+    const tooltip = d3.select("#tooltip");
+    svg.selectAll(".dot").data(data).enter().append("circle")
+        .attr("class", "dot").attr("cx", d => x(d.x)).attr("cy", d => y(d.y)).attr("r", 6)
+        .on("mouseover", (event, d) => {
+            tooltip.style("opacity", 1).html(`X: ${d.x.toFixed(2)}<br>Y: ${d.y.toFixed(2)}`)
+                   .style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => tooltip.style("opacity", 0));
+}
+
+function setData(n) { currentN = n; draw(); }
+function updateView() { draw(); }
+window.onload = draw;
